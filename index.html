@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Practice Space Task</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .grid-background {
+            background-image: 
+                linear-gradient(#20B2AA 1px, transparent 1px),
+                linear-gradient(90deg, #20B2AA 1px, transparent 1px),
+                linear-gradient(#FFB6C1 1px, transparent 1px),
+                linear-gradient(90deg, #FFB6C1 1px, transparent 1px),
+                linear-gradient(rgba(32, 178, 170, 0.3) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(32, 178, 170, 0.3) 1px, transparent 1px);
+            background-size: 50px 50px, 50px 50px, 10px 10px, 10px 10px, 25px 25px, 25px 25px;
+        }
+    </style>
+</head>
+<body class="min-h-screen p-6 font-mono grid-background">
+    <div class="max-w-3xl mx-auto bg-white/90 backdrop-blur-sm p-8 rounded-lg shadow-lg">
+        <!-- Screenshot Instructions Banner -->
+        <div class="mb-6 bg-pink-50/80 backdrop-blur-sm p-4 rounded-lg border-2 border-pink-200">
+            <h4 class="font-bold text-pink-800 flex items-center gap-2">
+                <i data-lucide="camera" class="w-5 h-5"></i>
+                How to Document Your Practice
+            </h4>
+            <div class="text-pink-700 text-sm mt-2 space-y-2">
+                <p>1. Add progress screenshots using the upload button below</p>
+                <p>2. Write your notes in the space provided</p>
+                <p>3. Take a final screenshot of this entire practice space:</p>
+                <ul class="ml-4 space-y-1">
+                    <li>• Mac: Press Command (⌘) + Shift + 3 for full screen</li>
+                    <li>• Windows: Press Windows + Shift + S</li>
+                </ul>
+                <p>4. Upload your final screenshot to Padlet</p>
+            </div>
+        </div>
+
+        <h3 class="text-3xl font-bold text-teal-600 mb-8 text-center">
+            Practice Space - Task 1
+        </h3>
+
+        <!-- Progress Screenshot Upload Section -->
+        <div class="mb-6">
+            <label class="block text-teal-800 mb-2 font-bold">
+                Add progress screenshots:
+            </label>
+            <div class="border-2 border-dashed border-teal-200 rounded-lg p-4 text-center bg-white/50 backdrop-blur-sm">
+                <input
+                    type="file"
+                    id="screenshot-upload"
+                    class="hidden"
+                    accept="image/*"
+                />
+                <button
+                    onclick="document.getElementById('screenshot-upload').click()"
+                    class="bg-pink-400 text-white px-4 py-2 rounded-lg hover:bg-pink-500 inline-flex items-center gap-2 transition-colors"
+                >
+                    <i data-lucide="image" class="w-5 h-5"></i>
+                    Add Progress Screenshot
+                </button>
+            </div>
+        </div>
+
+        <!-- Screenshots Display -->
+        <div id="screenshots-container" class="mb-6 hidden">
+            <h4 class="font-bold text-teal-800 mb-2">Your Progress Screenshots:</h4>
+            <div id="screenshots-grid" class="grid grid-cols-2 gap-4">
+            </div>
+        </div>
+
+        <!-- Notes Section -->
+        <div class="mb-6">
+            <label class="block text-teal-800 mb-2 font-bold">
+                Document your practice:
+            </label>
+            <textarea
+                id="notes"
+                class="w-full p-3 border-2 border-teal-200 rounded-lg h-48 bg-white/50 backdrop-blur-sm focus:border-teal-400 focus:ring-1 focus:ring-teal-400 outline-none"
+                placeholder="Write your observations, challenges, and solutions here. This will be included in your screenshot for Padlet..."
+            ></textarea>
+        </div>
+
+        <!-- Documentation Prompts -->
+        <div class="mb-6 bg-white/70 backdrop-blur-sm p-4 rounded-lg border-2 border-teal-100">
+            <h4 class="font-bold text-teal-800 mb-2">Suggested Documentation Points:</h4>
+            <ul class="list-disc list-inside text-teal-700 space-y-2">
+                <li>What specific techniques did you practice?</li>
+                <li>What challenges did you encounter?</li>
+                <li>How did you overcome these challenges?</li>
+                <li>What worked well and what didn't?</li>
+                <li>What will you try differently next time?</li>
+            </ul>
+        </div>
+
+        <!-- Padlet Reminder -->
+        <div class="mt-6 text-center p-4 bg-teal-50/80 backdrop-blur-sm rounded-lg border-2 border-teal-100">
+            <div class="flex items-center justify-center gap-2 text-teal-800 font-bold">
+                <i data-lucide="external-link" class="w-5 h-5"></i>
+                Remember to upload your final screenshot to Padlet!
+            </div>
+            <p class="text-sm text-teal-600 mt-2">
+                Your screenshot should include your progress images, notes, and these prompts for context
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Handle file upload
+        document.getElementById('screenshot-upload').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const container = document.getElementById('screenshots-container');
+                    const grid = document.getElementById('screenshots-grid');
+                    
+                    container.classList.remove('hidden');
+                    
+                    const wrapper = document.createElement('div');
+                    wrapper.className = 'relative group';
+                    wrapper.innerHTML = `
+                        <img src="${e.target.result}" alt="Practice progress" class="rounded-lg w-full object-cover aspect-video border-2 border-teal-200">
+                        <button onclick="this.parentElement.remove()" class="absolute top-2 right-2 bg-pink-400 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-pink-500">
+                            <i data-lucide="trash-2" class="w-4 h-4"></i>
+                        </button>
+                    `;
+                    
+                    grid.appendChild(wrapper);
+                    lucide.createIcons();
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+</body>
+</html>
